@@ -27,6 +27,7 @@
             overflow-x: hidden;
             color: var(--text);
             font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            scroll-behavior: smooth;
             background:
                 radial-gradient(circle at 15% 15%, rgba(255, 96, 166, 0.25), transparent 32%),
                 radial-gradient(circle at 80% 5%, rgba(255, 130, 190, 0.2), transparent 28%),
@@ -227,10 +228,10 @@
             border: 1px solid rgba(255, 188, 219, 0.55);
             background: #120c12;
             box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-            transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+            transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(var(--drag-scale, 1));
             top: var(--top);
             left: var(--left);
-            transition: box-shadow 220ms ease;
+            transition: box-shadow 260ms ease, transform 260ms ease;
             touch-action: none;
             cursor: grab;
             will-change: transform;
@@ -244,6 +245,10 @@
 
         .love-card:hover {
             box-shadow: 0 20px 50px rgba(255, 118, 183, 0.3);
+        }
+
+        .love-card.is-dragging {
+            box-shadow: 0 30px 60px rgba(255, 112, 184, 0.34);
         }
 
         .love-card img {
@@ -286,65 +291,66 @@
             border-color: #ff9bcb;
         }
 
-        .ticker {
-            border-radius: 24px;
-            border: 1px solid var(--line);
-            background: var(--panel);
-            overflow: hidden;
-            position: relative;
-            box-shadow: var(--shadow);
-        }
-
-        .ticker::before,
-        .ticker::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 80px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .ticker::before {
-            left: 0;
-            background: linear-gradient(90deg, rgba(16, 10, 16, 1), rgba(16, 10, 16, 0));
-        }
-
-        .ticker::after {
-            right: 0;
-            background: linear-gradient(270deg, rgba(16, 10, 16, 1), rgba(16, 10, 16, 0));
-        }
-
-        .ticker-track {
-            display: flex;
-            width: max-content;
-            gap: 20px;
-            padding: 20px 0;
-            animation: slideInfinite 42s linear infinite;
+        .quotes-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            padding: 0 16px;
         }
 
         .quote-card {
-            width: min(88vw, 500px);
-            min-height: 170px;
-            border-radius: 18px;
+            border-radius: 20px;
             background: linear-gradient(145deg, rgba(255, 168, 214, 0.16), rgba(255, 103, 170, 0.09));
             border: 1px solid rgba(255, 194, 225, 0.45);
             padding: 22px;
             color: #ffe8f4;
-            flex-shrink: 0;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.24);
+            transition: transform 350ms cubic-bezier(.2, .8, .2, 1), box-shadow 280ms ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .quote-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: opacity 250ms ease;
+            pointer-events: none;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 24px 40px rgba(0, 0, 0, 0.34);
+        }
+
+        .quote-card:hover::before {
+            opacity: 1;
         }
 
         .quote-card p {
-            font-size: 0.96rem;
-            line-height: 1.58;
+            font-size: 0.94rem;
+            line-height: 1.62;
+            color: #fff0f8;
+            margin: 0;
         }
 
         .quote-card small {
             display: block;
-            margin-top: 12px;
+            margin-top: 14px;
             color: var(--pink-soft);
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
+            font-size: 0.85rem;
+            font-style: italic;
         }
 
         @keyframes slideInfinite {
@@ -419,9 +425,8 @@
                 height: 178px;
             }
 
-            .ticker::before,
-            .ticker::after {
-                width: 50px;
+            .quote-card:hover {
+                transform: translateY(-3px) scale(1.01);
             }
         }
     </style>
@@ -455,33 +460,32 @@
         </section>
 
         <section class="screen" id="page2">
-            <h2 class="section-title">Our Photo Cards</h2>
             <section class="cards-shell">
                 <p class="cards-caption">Drag kartu fotonya sesuka kamu</p>
 
                 <article class="love-card" style="--top: 10%; --left: 10%; --rot: -7deg; --dx: 0px; --dy: 0px; --delay: 0.05s;">
                     <img src="p1.jpeg" alt="Foto 1">
-                    <h3>My Favorite Smile</h3>
+                    <h3>cewe paling cantik dan manis</h3>
                 </article>
 
                 <article class="love-card" style="--top: 34%; --left: 17%; --rot: 8deg; --dx: 0px; --dy: 0px; --delay: 0.12s;">
                     <img src="p2.jpeg" alt="Foto 2">
-                    <h3>Look That I Adore</h3>
+                    <h3>cewe paling cantik dan manis</h3>
                 </article>
 
                 <article class="love-card" style="--top: 8%; --left: 35%; --rot: -2deg; --dx: 0px; --dy: 0px; --delay: 0.18s;">
                     <img src="p3.jpeg" alt="Foto 3">
-                    <h3>Always Beautiful</h3>
+                    <h3>cewe paling cantik dan manis</h3>
                 </article>
 
                 <article class="love-card" style="--top: 30%; --left: 50%; --rot: 9deg; --dx: 0px; --dy: 0px; --delay: 0.24s;">
                     <img src="p4.jpeg" alt="Foto 4">
-                    <h3>Sweetest Moment</h3>
+                    <h3>cewe paling cantik dan manis</h3>
                 </article>
 
                 <article class="love-card" style="--top: 12%; --left: 68%; --rot: -6deg; --dx: 0px; --dy: 0px; --delay: 0.3s;">
                     <img src="p5.jpeg" alt="Foto 5">
-                    <h3>Forever In My Heart</h3>
+                    <h3>cewe paling cantik dan manis</h3>
                 </article>
             </section>
 
@@ -492,31 +496,40 @@
         </section>
 
         <section class="screen" id="page3">
-            <h2 class="section-title">Kata Kata Buat Kamu</h2>
-            <section class="ticker" aria-label="Kata kata berjalan">
-                <div class="ticker-track">
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 24px;">
+                <h2 class="section-title">Kata Kata Buat Kamu</h2>
+                
+                <div class="quotes-container">
                     <article class="quote-card">
                         <p>"aku mau kamu dengan keadaan ga terpaksa, so i'll be waiting and always beside u vel jadi selalu jadi diri kamu yaaa jangan pernah memaksa untuk berubah menjadi orang lain be ur self dan aku bakalan suka sama kamu yang menjadi diri kamu sendiri❤️"</p>
                         <small>for you, always</small>
                     </article>
+                    
                     <article class="quote-card">
                         <p>"aku serius sama kamu, kamu bingung pasti aku ngomong gitu karena kita belum pernah ketemu, tapi aku ngomong gini karena aku suka sama kamu, jadi seapapun seberapapun segimanapun aku tetep pilih kamu buat sekarang dan masa depanku❤️"</p>
                         <small>today, tomorrow, forever</small>
                     </article>
-                    <article class="quote-card" aria-hidden="true">
-                        <p>"aku mau kamu dengan keadaan ga terpaksa, so i'll be waiting and always beside u vel jadi selalu jadi diri kamu yaaa jangan pernah memaksa untuk berubah menjadi orang lain be ur self dan aku bakalan suka sama kamu yang menjadi diri kamu sendiri❤️"</p>
-                        <small>for you, always</small>
+                    
+                    <article class="quote-card">
+                        <p>"kadang aku ngerasa tenang banget cuma dari chat kamu, sesimpel itu tapi efeknya bisa bikin hari aku jauh lebih baik, jadi jangan bosen ya kalo aku sering nyariin kamu❤️"</p>
+                        <small>my calm place</small>
                     </article>
-                    <article class="quote-card" aria-hidden="true">
-                        <p>"aku serius sama kamu, kamu bingung pasti aku ngomong gitu karena kita belum pernah ketemu, tapi aku ngomong gini karena aku suka sama kamu, jadi seapapun seberapapun segimanapun aku tetep pilih kamu buat sekarang dan masa depanku❤️"</p>
-                        <small>today, tomorrow, forever</small>
+                    
+                    <article class="quote-card">
+                        <p>"aku ga butuh yang paling sempurna, aku cuma butuh kamu yang selalu jujur jadi diri kamu sendiri, karena versi kamu yang itu yang bikin aku nyaman banget❤️"</p>
+                        <small>only you</small>
+                    </article>
+                    
+                    <article class="quote-card">
+                        <p>"kalo nanti jalannya pelan gapapa, yang penting kita sama-sama jalan dan saling jagain, aku ada bukan cuma buat hari ini tapi buat hari-hari setelahnya juga❤️"</p>
+                        <small>slowly but surely</small>
                     </article>
                 </div>
-            </section>
 
-            <div class="nav-row">
-                <button class="nav-btn" type="button" data-go="page2">Kembali Page 2</button>
-                <button class="nav-btn" type="button" data-go="page1">Kembali Page 1</button>
+                <div class="nav-row">
+                    <button class="nav-btn" type="button" data-go="page2">Kembali Page 2</button>
+                    <button class="nav-btn" type="button" data-go="page1">Kembali Page 1</button>
+                </div>
             </div>
         </section>
     </main>
@@ -528,40 +541,78 @@
         cards.forEach((card) => {
             let startX = 0;
             let startY = 0;
-            let currentX = 0;
-            let currentY = 0;
+            let baseX = parseFloat(card.dataset.dx || '0');
+            let baseY = parseFloat(card.dataset.dy || '0');
+            let targetX = baseX;
+            let targetY = baseY;
+            let renderX = baseX;
+            let renderY = baseY;
+            let isDragging = false;
+            let frameId = 0;
+
+            const animate = () => {
+                renderX += (targetX - renderX) * 0.22;
+                renderY += (targetY - renderY) * 0.22;
+
+                card.dataset.dx = String(renderX);
+                card.dataset.dy = String(renderY);
+                card.style.setProperty('--dx', renderX + 'px');
+                card.style.setProperty('--dy', renderY + 'px');
+
+                if (isDragging || Math.abs(targetX - renderX) > 0.08 || Math.abs(targetY - renderY) > 0.08) {
+                    frameId = requestAnimationFrame(animate);
+                } else {
+                    frameId = 0;
+                }
+            };
+
+            const startAnimate = () => {
+                if (!frameId) {
+                    frameId = requestAnimationFrame(animate);
+                }
+            };
 
             card.addEventListener('pointerdown', (event) => {
                 event.preventDefault();
                 card.setPointerCapture(event.pointerId);
 
+                isDragging = true;
+                card.classList.add('is-dragging');
+                card.style.setProperty('--drag-scale', '1.03');
+
                 startX = event.clientX;
                 startY = event.clientY;
-                currentX = parseFloat(card.dataset.dx || '0');
-                currentY = parseFloat(card.dataset.dy || '0');
+                baseX = parseFloat(card.dataset.dx || '0');
+                baseY = parseFloat(card.dataset.dy || '0');
 
                 zCounter += 1;
                 card.style.zIndex = String(zCounter);
 
                 const onMove = (moveEvent) => {
-                    const dx = currentX + moveEvent.clientX - startX;
-                    const dy = currentY + moveEvent.clientY - startY;
-
-                    card.dataset.dx = String(dx);
-                    card.dataset.dy = String(dy);
-                    card.style.setProperty('--dx', dx + 'px');
-                    card.style.setProperty('--dy', dy + 'px');
+                    targetX = baseX + moveEvent.clientX - startX;
+                    targetY = baseY + moveEvent.clientY - startY;
+                    startAnimate();
                 };
 
                 const onUp = () => {
+                    isDragging = false;
+                    baseX = targetX;
+                    baseY = targetY;
+                    card.classList.remove('is-dragging');
+                    card.style.setProperty('--drag-scale', '1');
+
                     card.removeEventListener('pointermove', onMove);
                     card.removeEventListener('pointerup', onUp);
                     card.removeEventListener('pointercancel', onUp);
+
+                    startAnimate();
                 };
 
                 card.addEventListener('pointermove', onMove);
                 card.addEventListener('pointerup', onUp);
                 card.addEventListener('pointercancel', onUp);
+
+                startAnimate();
             });
         });
 
@@ -579,18 +630,25 @@
         const screens = document.querySelectorAll('.screen');
         const navButtons = document.querySelectorAll('[data-go]');
 
+        const isValidScreen = (id) => Array.from(screens).some((screen) => screen.id === id);
+
         const showScreen = (id) => {
+            const nextId = isValidScreen(id) ? id : 'page1';
+
             screens.forEach((screen) => {
-                screen.classList.toggle('is-active', screen.id === id);
+                screen.classList.toggle('is-active', screen.id === nextId);
             });
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         navButtons.forEach((button) => {
             button.addEventListener('click', () => {
-                showScreen(button.dataset.go);
+                showScreen(button.dataset.go || 'page1');
             });
         });
+
+        showScreen('page1');
 
         const bgMusic = document.getElementById('bgMusic');
         const tryPlayMusic = () => {
