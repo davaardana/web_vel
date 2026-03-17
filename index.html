@@ -353,6 +353,74 @@
             font-style: italic;
         }
 
+        .quote-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 194, 225, 0.25);
+        }
+
+        .heart-btn {
+            background: none;
+            border: none;
+            color: #ff6b87;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: transform 200ms ease, filter 200ms ease;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 8px rgba(255, 107, 135, 0.5));
+        }
+
+        .heart-btn:active {
+            transform: scale(0.95);
+        }
+
+        .like-count {
+            font-size: 0.85rem;
+            color: var(--pink-soft);
+            font-weight: 600;
+        }
+
+        .flower-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .flower-3d {
+            position: absolute;
+            font-size: 2rem;
+            animation: flowerFloat 3s ease-out forwards;
+            filter: drop-shadow(0 0 12px rgba(255, 107, 135, 0.6));
+            text-shadow: 0 0 8px rgba(255, 150, 205, 0.8);
+        }
+
+        @keyframes flowerFloat {
+            0% {
+                transform: translate(0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(var(--tx), var(--ty)) rotateX(45deg) rotateY(45deg) rotateZ(180deg) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotateX(90deg) rotateY(180deg) rotateZ(360deg) scale(0.2);
+                opacity: 0;
+            }
+        }
+
         @keyframes slideInfinite {
             from { transform: translateX(0); }
             to { transform: translateX(-50%); }
@@ -500,29 +568,59 @@
                 <h2 class="section-title">Kata Kata Buat Kamu</h2>
                 
                 <div class="quotes-container">
-                    <article class="quote-card">
+                    <article class="quote-card" data-quote-id="0">
                         <p>"aku mau kamu dengan keadaan ga terpaksa, so i'll be waiting and always beside u vel jadi selalu jadi diri kamu yaaa jangan pernah memaksa untuk berubah menjadi orang lain be ur self dan aku bakalan suka sama kamu yang menjadi diri kamu sendiri❤️"</p>
-                        <small>for you, always</small>
+                        <div class="quote-actions">
+                            <small>for you, always</small>
+                            <button class="heart-btn" type="button" aria-label="Like this quote">
+                                <span class="heart-icon">🌸</span>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
                     </article>
                     
-                    <article class="quote-card">
+                    <article class="quote-card" data-quote-id="1">
                         <p>"aku serius sama kamu, kamu bingung pasti aku ngomong gitu karena kita belum pernah ketemu, tapi aku ngomong gini karena aku suka sama kamu, jadi seapapun seberapapun segimanapun aku tetep pilih kamu buat sekarang dan masa depanku❤️"</p>
-                        <small>today, tomorrow, forever</small>
+                        <div class="quote-actions">
+                            <small>today, tomorrow, forever</small>
+                            <button class="heart-btn" type="button" aria-label="Like this quote">
+                                <span class="heart-icon">🌸</span>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
                     </article>
                     
-                    <article class="quote-card">
+                    <article class="quote-card" data-quote-id="2">
                         <p>"kadang aku ngerasa tenang banget cuma dari chat kamu, sesimpel itu tapi efeknya bisa bikin hari aku jauh lebih baik, jadi jangan bosen ya kalo aku sering nyariin kamu❤️"</p>
-                        <small>my calm place</small>
+                        <div class="quote-actions">
+                            <small>my calm place</small>
+                            <button class="heart-btn" type="button" aria-label="Like this quote">
+                                <span class="heart-icon">🌸</span>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
                     </article>
                     
-                    <article class="quote-card">
+                    <article class="quote-card" data-quote-id="3">
                         <p>"aku ga butuh yang paling sempurna, aku cuma butuh kamu yang selalu jujur jadi diri kamu sendiri, karena versi kamu yang itu yang bikin aku nyaman banget❤️"</p>
-                        <small>only you</small>
+                        <div class="quote-actions">
+                            <small>only you</small>
+                            <button class="heart-btn" type="button" aria-label="Like this quote">
+                                <span class="heart-icon">🌸</span>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
                     </article>
                     
-                    <article class="quote-card">
+                    <article class="quote-card" data-quote-id="4">
                         <p>"kalo nanti jalannya pelan gapapa, yang penting kita sama-sama jalan dan saling jagain, aku ada bukan cuma buat hari ini tapi buat hari-hari setelahnya juga❤️"</p>
-                        <small>slowly but surely</small>
+                        <div class="quote-actions">
+                            <small>slowly but surely</small>
+                            <button class="heart-btn" type="button" aria-label="Like this quote">
+                                <span class="heart-icon">🌸</span>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
                     </article>
                 </div>
 
@@ -658,6 +756,61 @@
         window.addEventListener('load', tryPlayMusic);
         document.addEventListener('click', tryPlayMusic, { once: true });
         document.addEventListener('touchstart', tryPlayMusic, { once: true });
+
+        const flowerEmojis = ['🌸', '🌼', '🌷', '🌹', '💐'];
+        const flowerContainer = document.createElement('div');
+        flowerContainer.className = 'flower-container';
+        document.body.appendChild(flowerContainer);
+
+        const likeStorage = JSON.parse(localStorage.getItem('quoteLikes') || '{}');
+
+        const updateLikeDisplay = (quoteCard, quoteId) => {
+            const count = likeStorage[quoteId] || 0;
+            const countEl = quoteCard.querySelector('.like-count');
+            countEl.textContent = count;
+        };
+
+        const spawnFlowers = (clickX, clickY) => {
+            for (let i = 0; i < 5; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower-3d';
+                flower.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+
+                const angle = (i / 5) * Math.PI * 2;
+                const distance = 80 + Math.random() * 60;
+                const tx = Math.cos(angle) * distance;
+                const ty = -Math.sin(angle) * distance;
+
+                flower.style.setProperty('--tx', tx + 'px');
+                flower.style.setProperty('--ty', ty + 'px');
+                flower.style.left = clickX + 'px';
+                flower.style.top = clickY + 'px';
+
+                flowerContainer.appendChild(flower);
+
+                setTimeout(() => flower.remove(), 3000);
+            }
+        };
+
+        document.querySelectorAll('.heart-btn').forEach((btn) => {
+            const quoteCard = btn.closest('.quote-card');
+            const quoteId = quoteCard.dataset.quoteId;
+
+            updateLikeDisplay(quoteCard, quoteId);
+
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const rect = btn.getBoundingClientRect();
+                const clickX = rect.left + rect.width / 2;
+                const clickY = rect.top;
+
+                likeStorage[quoteId] = (likeStorage[quoteId] || 0) + 1;
+                localStorage.setItem('quoteLikes', JSON.stringify(likeStorage));
+
+                updateLikeDisplay(quoteCard, quoteId);
+                spawnFlowers(clickX, clickY);
+            });
+        });
     </script>
 </body>
 </html>
